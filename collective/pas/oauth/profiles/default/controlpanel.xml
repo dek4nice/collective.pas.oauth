@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<object
+    name="portal_controlpanel"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="collective.pas.oauth">
+
+    <configlet
+        title="OAuth login settings"
+        action_id="collective.pas.oauth"
+        appId="collective.pas.oauth"
+        category="Plone"
+        condition_expr=""
+        icon_expr="string:$portal_url/++resource++collective.pas.oauth.image_oauth.gif"
+        url_expr="string:${portal_url}/@@login-oauth-controlpanel"
+        visible="True"
+        i18n:attributes="title">
+            <permission>Manage portal</permission>
+ </configlet>
+
+</object>

@@ -1,0 +1,106 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    lang="en"
+    metal:use-macro="context/prefs_main_template/macros/master"
+    i18n:domain="collective.pas.oauth">
+
+<body>
+
+<div metal:fill-slot="prefs_configlet_content">
+
+      <div id="region-content" class="documentEditable">
+
+
+        <div class="documentContent" id="content">
+            <a name="documentContent"></a>
+
+            <div metal:use-macro="context/global_statusmessage/macros/portal_message">Portal status message</div>
+
+            <div class="configlet">
+
+                <h1 class="documentFirstHeading" i18n:translate="heading_caching_settings">OAuth-services setting</h1>
+
+                <a href="" class="link-parent" tal:attributes="href string:${portal_url}/plone_control_panel" i18n:translate="label_up_to_plone_setup">Up to Site Setup</a>
+
+                <p i18n:translate="description_oauth_settings">Service variables.</p>
+
+                <form
+                    name="settings"
+                    method="post"
+                    class="enableFormTabbing enableUnloadProtection"
+                    tal:attributes="action request/URL"
+                    tal:define="errors view/errors">
+
+                    <fieldset id="fieldset-global">
+                        <legend id="fieldsetlegend-global-settings">Global settings</legend>
+
+<div tal:define="error errors/autoregistration | nothing" tal:attributes="class python:'field error' if error else 'field'">
+    <label for="autoregistration" i18n:translate="label_ram_max_entries">Auto registration</label>
+    <span class="fieldRequired" i18n:translate="">(Required)</span>
+    <div class="formHelp" i18n:translate="help_autoregistration">Use automatic registration of oauth-logined new users</div>
+    <div tal:condition="error" tal:content="error"></div>
+    <input name="autoregistration" id="autoregistration" size="6" tal:attributes="value request/autoregistration | view/cfg_global/autoregistration | nothing" />
+</div>
+
+                    </fieldset>
+
+                    <fieldset id="fieldset-facebook">
+                        <legend id="fieldsetlegend-facebook">Facebook</legend>
+
+                        <div class="discreet" i18n:translate="description_facebook">Drive traffic and sign ups to your website by integrating with Facebook. Use the Like Button, Send Button or other plugins to drive traffic to your site. Build apps on Facebook.com or mobile apps on the web that integrates with Facebook's mobile web site, iOS or Android applications.</div>
+
+                        <div tal:define="error errors/facebook_client_id | nothing" tal:attributes="class python:'field error' if error else 'field'">
+                            <label for="facebook_client_id" i18n:translate="label_ram_max_entries">Facebook client ID</label>
+                            <span class="fieldRequired" i18n:translate="">(Required)</span>
+                            <div class="formHelp" i18n:translate="help_facebook_client_id">Alternatively, you can of course use the ID of an existing app.</div>
+                            <div tal:condition="error" tal:content="error"></div>
+                            <input name="facebook_client_id" id="facebook_client_id" size="20" tal:attributes="value request/facebook_client_id | view/cfg_facebook/client_id | nothing" />
+                        </div>
+                        <div tal:define="error errors/facebook_client_secret | nothing" tal:attributes="class python:'field error' if error else 'field'">
+                            <label for="facebook_client_secret" i18n:translate="label_ram_max_entries">Facebook API Secret</label>
+                            <span class="fieldRequired" i18n:translate="">(Required)</span>
+                            <div class="formHelp" i18n:translate="help_facebook_client_secret">Alternatively, you can of course use the ID of an existing app.</div>
+                            <div tal:condition="error" tal:content="error"></div>
+                            <input name="facebook_client_secret" id="facebook_client_secret" size="30" tal:attributes="value request/facebook_client_secret | view/cfg_facebook/client_secret | nothing" />
+                        </div>
+
+                    </fieldset>
+
+                    <fieldset id="fieldset-twitter">
+                        <legend id="fieldsetlegend-twitter">Twitter</legend>
+                        <p>empty</p>
+                    </fieldset>
+
+                    <fieldset id="fieldset-google">
+                        <legend id="fieldsetlegend-google">Google</legend>
+                        <p>empty</p>
+                    </fieldset>
+
+                    <div class="formControls">
+                        <input
+                            type="submit"
+                            name="form.button.Save"
+                            class="context"
+                            value="Save"
+                            i18n:attributes="value" />
+
+                        <input
+                            type="submit"
+                            name="form.button.Cancel"
+                            class="context"
+                            value="Cancel"
+                            i18n:attributes="value" />
+                    </div>
+
+                    <input tal:replace="structure context/@@authenticator/authenticator" />
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

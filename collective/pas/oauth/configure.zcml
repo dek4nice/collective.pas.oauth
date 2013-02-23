@@ -1,0 +1,20 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="collective.pas.oauth">
+
+  <five:registerPackage package="." initialize=".initialize" />
+  <include package=".browser" />
+
+    <genericsetup:registerProfile
+        name="default"
+        title="OAuth 2.0 PAS"
+        directory="profiles/default"
+        description="Installs collective.pas.oauth"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
+
+
+</configure>

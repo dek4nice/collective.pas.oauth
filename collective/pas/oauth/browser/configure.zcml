@@ -1,0 +1,32 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="collective.pas.oauth">
+
+    <browser:page
+        name="login-oauth-controlpanel"
+        for="Products.CMFCore.interfaces.ISiteRoot"
+        class=".controlpanel.OauthControlPanel"
+        template="controlpanel.pt"
+        permission="cmf.ManagePortal"
+    />
+    <browser:page
+        name="login-facebook"
+        for="Products.CMFCore.interfaces.ISiteRoot"
+        class=".facebook.FacebookLoginView"
+        permission="zope2.View"
+        /> 
+<!-- 
+    <browser:page
+        name="login-twitter"
+        for="Products.CMFCore.interfaces.ISiteRoot"
+        class=".twitter.TwitterLoginView"
+        permission="zope2.View"
+        /> 
+-->
+    <browser:resource
+        name="collective.pas.oauth.image_oauth.gif"
+        image="image_oauth.gif"
+        />
+
+</configure>

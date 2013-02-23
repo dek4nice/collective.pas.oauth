@@ -1,0 +1,9 @@
+<registry xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+          i18n:domain="collective.pas.oauth">
+
+    <records interface="collective.pas.oauth.interface.IOauthSettings" />
+
+
+    <!-- <record name="collective.pas.oauth.interfaces.IOauthSettings.label"></record> -->
+
+</registry>
