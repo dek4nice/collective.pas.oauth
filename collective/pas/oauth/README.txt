@@ -20,22 +20,22 @@ Plugin setup
 
 collective.pas.oauth should be in the list of installable plugins:
 
-    >>> 'Oauth Helper' in select.displayOptions
+    >>> 'Oauth Plugin Base' in select.displayOptions
     True
 
 and we can select it:
 
-    >>> select.getControl('Oauth Helper').click()
+    >>> select.getControl('Oauth Plugin Base').click()
     >>> select.displayValue
-    ['Oauth Helper']
+    ['Oauth Plugin Base']
     >>> select.value
-    ['manage_addProduct/collective.pas.oauth/manage_add_oauth_helper_form']
+    ['manage_addProduct/collective.pas.oauth/manage_add_oauth_form']
 
-we add 'Oauth Helper' to acl_users:
+we add 'Oauth Plugin Base' to acl_users:
 
-    >>> from collective.pas.oauth.plugin import OauthHelper
-    >>> myhelper = OauthHelper('myplugin', 'Oauth Helper')
-    >>> self.portal.acl_users['myplugin'] = myhelper
+    >>> from collective.pas.oauth.plugin import OauthPluginBase
+    >>> mybase = OauthPluginBase('myplugin', 'Oauth Plugin Base')
+    >>> self.portal.acl_users['myplugin'] = mybase
 
 and so on. Continue your tests here
 

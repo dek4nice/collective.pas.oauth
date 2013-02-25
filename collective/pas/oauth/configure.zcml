@@ -5,8 +5,9 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="collective.pas.oauth">
 
-  <five:registerPackage package="." initialize=".initialize" />
-  <include package=".browser" />
+    <five:registerPackage package="." initialize=".initialize" />
+
+    <include package=".browser" />
 
     <genericsetup:registerProfile
         name="default"
@@ -16,5 +17,11 @@
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
 
+    <genericsetup:importStep
+        name="collective.pas.oauth"
+        title="OAuth 2.0 registry and PAS installer"
+        description="Update collective.pas.oauth setting registry and PAS installer"
+        handler=".setuphandlers.importVarious"
+        />
 
 </configure>

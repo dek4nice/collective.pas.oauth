@@ -1,4 +1,4 @@
-"""Class: OauthHelper
+"""Class: OauthPluginBase
 """
 
 from AccessControl.SecurityInfo import ClassSecurityInfo
@@ -7,10 +7,10 @@ from App.class_init import default__class_init__ as InitializeClass
 from Products.PluggableAuthService.plugins.BasePlugin import BasePlugin
 from Products.PluggableAuthService.utils import classImplements
 
-import interface
+import interfaces
 import plugins
 
-class OauthHelper( # -*- implemented plugins -*-
+class OauthPluginBase( # -*- implemented plugins -*-
                     plugins.credentials_reset.CredentialsResetPlugin,
                     plugins.authentication.AuthenticationPlugin,
                     plugins.extraction.ExtractionPlugin,
@@ -19,7 +19,7 @@ class OauthHelper( # -*- implemented plugins -*-
 
     """
 
-    meta_type = 'Oauth Helper'
+    meta_type = 'Oauth Plugin Base'
     security = ClassSecurityInfo()
 
     def __init__( self, id, title=None ):
@@ -28,6 +28,6 @@ class OauthHelper( # -*- implemented plugins -*-
 
 
 
-classImplements(OauthHelper, interface.IOauthHelper)
+classImplements(OauthPluginBase, interfaces.IOauthPluginBase)
 
-InitializeClass( OauthHelper )
+InitializeClass(OauthPluginBase)

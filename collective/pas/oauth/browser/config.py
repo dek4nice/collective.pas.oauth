@@ -7,11 +7,11 @@ google_access_type = 'online'
 
 facebook_client_id         = '131180623724074'
 facebook_client_secret     = '9594fd8343eef360a522f142eaf9ba68'
-facebook_redirect_uri      = 'http://dek4nice.ru/login-facebook'
 facebook_auth_url          = "https://graph.facebook.com/oauth/authorize"
 facebook_access_token_url  = "https://graph.facebook.com/oauth/access_token"
 facebook_profile_url       = "https://graph.facebook.com/me"
-facebook_scope             = ['read_stream','email']
+#facebook_redirect_uri      = 'http://dek4nice.ru/login-facebook'
+#facebook_scope             = ['read_stream','email']
 
 foursquare_client_id = 'RNFFUX2WE5LDDD1NE2MUKGD5CESXKX0U4DJXPGDN24O0KENY'
 foursquare_client_secret = 'OC5CIEMC0EYCBMR3PT1BG0WVPMIZKT1QM2KNA5ARC2GGWZRE'

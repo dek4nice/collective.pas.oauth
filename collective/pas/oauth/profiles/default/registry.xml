@@ -1,9 +1,16 @@
-<registry xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-          i18n:domain="collective.pas.oauth">
+<registry>
 
-    <records interface="collective.pas.oauth.interface.IOauthSettings" />
+    <records interface="collective.pas.oauth.interfaces.IOauthGlobalSettings" />
+    <records interface="collective.pas.oauth.interfaces.IOauthCustomSettings" />
+    <records interface="collective.pas.oauth.interfaces.IOauthFacebookSettings" />
+    <records interface="collective.pas.oauth.interfaces.IOauthGoogleSettings" />
+    <records interface="collective.pas.oauth.interfaces.IOauthTwitterSettings" />
+    <records interface="collective.pas.oauth.interfaces.IOauthGithubSettings" />
+    <records interface="collective.pas.oauth.interfaces.IOauthOdnoklassnikiSettings" />
+    <records interface="collective.pas.oauth.interfaces.IOauthVkontakteSettings" />
 
-
-    <!-- <record name="collective.pas.oauth.interfaces.IOauthSettings.label"></record> -->
+    <!--
+    <record name="collective.pas.oauth.interfaces.IOauthFacebookSettings.profile_url" />
+    -->
 
 </registry>

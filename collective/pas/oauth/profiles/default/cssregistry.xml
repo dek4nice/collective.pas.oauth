@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<object name="portal_css" meta_type="Stylesheets Registry">
+
+    <stylesheet
+        id="++resource++collective.pas.oauth.style.css"
+        title="" enabled="True"
+        cacheable="False" cookable="False" compression="safe"
+        conditionalcomment="" expression=""
+        media="all" rel="stylesheet"
+        rendering="link"
+        insert-before="ploneCustom.css"
+    />
+
+</object>
+

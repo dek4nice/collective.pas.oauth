@@ -10,11 +10,11 @@
         appId="collective.pas.oauth"
         category="Plone"
         condition_expr=""
-        icon_expr="string:$portal_url/++resource++collective.pas.oauth.image_oauth.gif"
+        icon_expr="string:$portal_url/++resource++collective.pas.oauth.images/oauth_listing.gif"
         url_expr="string:${portal_url}/@@login-oauth-controlpanel"
         visible="True"
         i18n:attributes="title">
             <permission>Manage portal</permission>
- </configlet>
+    </configlet>
 
 </object>

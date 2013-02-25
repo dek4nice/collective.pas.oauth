@@ -5,12 +5,12 @@ import urllib
 from login import OAuthLogin
 from Products.statusmessages.interfaces import IStatusMessage
 from collective.pas.oauth import OauthMessageFactory as _
-from zope.component import getUtility
-from plone.registry.interfaces import IRegistry
-from collective.pas.oauth.interfaces import IOauthFacebookSettings
 
-class FacebookLoginView(OAuthLogin):
-    """Facebook OAuth 2.0 login view"""
+from plone.registry.interfaces import IRegistry
+from collective.pas.oauth.interfaces import IOauthGoogleSettings
+
+class GoogleLoginView(OAuthLogin):
+    """Google OAuth 2.0 login view"""
 
     def __call__(self):
         redirect = self.request.response.redirect
@@ -20,30 +20,31 @@ class FacebookLoginView(OAuthLogin):
         redirect_uri = "%s/%s" % (self.context.absolute_url(), self.__name__,)
 
         registry = getUtility(IRegistry)
-        cfg_facebook = registry.forInterface(IOauthFacebookSettings)
+        cfg_google = registry.forInterface(IOauthGoogleSettings)
 
         args = {
-            'client_id': cfg_facebook.client_id,
+            'client_id': cfg_google.client_id,
             'redirect_uri': redirect_uri,
         }
 
         if errorReason is not None:
-            IStatusMessage(self.request).add(_(u"Facebook authentication denied"), type="error")
+            IStatusMessage(self.request).add(_(u"Google authentication denied"), type="error")
             redirect(self.context.absolute_url())
             return u""
 
         #First request
         if verificationCode is None:
-            return self.requestInitial(cfg_facebook.auth_url , args)
+            return self.requestInitial(cfg_google.auth_url , args)
 
-        args["client_secret"] = cfg_facebook.client_secret
+        args["client_secret"] = cfg_google.client_secret
         args["code"] = verificationCode
 
-        responseToken = self.requestToken(cfg_facebook.token_url , args)
+        responseToken = self.requestToken(cfg_google.token_url , args)
         accessToken = responseToken["access_token"][-1]
 
-        args_profile = {'access_token': accessToken , 'fields': 'id,email,name'}
-        responseProfile = self.requestProfile(cfg_facebook.profile_url , args_profile)
+        return responseToken
+        # args_profile = {'access_token': accessToken , 'fields': 'id,email,name'}
+        responseProfile = self.requestProfile(cfg_google.profile_url , args_profile)
 
         userId = responseProfile.get('id')
         userFullname = responseProfile.get('name')
@@ -56,7 +57,7 @@ class FacebookLoginView(OAuthLogin):
         self.set_useremail(userEmail)
 
         if not userId or not userFullname:
-            IStatusMessage(self.request).add(_(u"Insufficient information in Facebook profile"), type="error")
+            IStatusMessage(self.request).add(_(u"Insufficient information in Google profile"), type="error")
             redirect(self.context.absolute_url())
             return u""
 
@@ -64,5 +65,5 @@ class FacebookLoginView(OAuthLogin):
         redirect(self.context.absolute_url())
 
     def checkin_enabled(self):
-        # python:member is None and path('object/@@login-facebook').checkin_enabled()
-        return super(OAuthLogin, self).checkin_enabled('facebook')
+        # python:member is None and path('object/@@login-google').checkin_enabled()
+        return super(OAuthLogin, self).checkin_enabled('google')

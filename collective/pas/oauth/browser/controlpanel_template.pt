@@ -33,6 +33,7 @@
                     tal:attributes="action request/URL"
                     tal:define="errors view/errors">
 
+<tal:off replace="nothing">
                     <fieldset id="fieldset-global">
                         <legend id="fieldsetlegend-global-settings">Global settings</legend>
 
@@ -46,11 +47,122 @@
 
                     </fieldset>
 
+<!--
+{
+    'min_length'    : 0,
+    'description'   : u'help_profile_url',
+    '__doc__'   : u'profile_url\n\nhelp_profile_url',
+    '_Element__tagged_values': {},
+    'max_length'    : None,
+    'defaultFactory': None,
+    'default'   : 'https://graph.facebook.com/me',
+    'order'     : 727,
+    'interface' : <InterfaceClass collective.pas.oauth.interfaces.IOauthFacebookSettings>,
+    'title'     : u'profile_url',
+    '__name__'  : 'profile_url',
+    'readonly'  : False,
+    'required'  : True
+}
+_Element__tagged_values,
+_Field__missing_value_marker,
+__class__,
+__delattr__,
+__dict__,
+__doc__,
+__eq__,
+__format__,
+__getattribute__,
+__hash__,
+__implemented__,
+__init__,
+__module__,
+__name__,
+__ne__,
+__new__,
+__providedBy__,
+__provides__,
+__reduce__,
+__reduce_ex__,
+__repr__,
+__setattr__,
+__sizeof__,
+__str__,
+__subclasshook__,
+__weakref__,
+_type,
+_validate,
+bind,
+constraint,
+context,
+default,
+defaultFactory,
+description,
+fromUnicode,
+get,
+getDoc,
+getName,
+getTaggedValue,
+getTaggedValueTags,
+interface,
+missing_value,
+order,
+query,
+queryTaggedValue,
+readonly,
+required,
+set,
+setTaggedValue,
+title,
+validate
+-->
+    content="python:view.fields_global"
+    content="python:view.fields_keys[:1]"
+            group python:fields_global[group_id];
+</tal:off>
+
+    <fieldset id="fieldset-global" tal:define="
+        group_id     python:'global';
+        registry     python: view.cfg_global;
+        fields_group python:view.fields_global;
+    ">
+        <legend id="fieldsetlegend-global">Global settings</legend>
+        <div class="discreet">Enable/disable required services</div>
+        <tal:fields repeat="field_id fields_group">
+            <tal:field define="field python:fields_group[field_id];">
+                <div metal:use-macro="here/@@login-oauth-controlpanel-field/macros/field">Field template</div>
+            </tal:field>
+        </tal:fields>
+    </fieldset>
+
+    <tal:fieldsets
+        repeat="group_id python:view.fields_keys[:0]"
+        >
+        <fieldset
+            tal:define="
+                group python:view.fields[group_id];
+            "
+            tal:attributes="id string:fieldset-${group_id};">
+            <tal:off replace="nothing"> 
+            <legend tal:attributes="id string:fieldsetlegend-${group_id};" tal:content="group/Title">Group Title</legend>
+            <div class="discreet" tal:content="group/Description">Grop Description</div>
+            </tal:off>
+            <tal:fields
+                define="
+                    registry     python: getattr(view , 'cfg_' + group_id);
+                    fields_group python:view.fields[group_id];
+                "
+                repeat="field_id fields_group">
+
+                <div metal:use-macro="here/@@login-oauth-controlpanel-field/macros/field">Field template</div>
+
+            </tal:fields>
+        </fieldset>
+    </tal:fieldsets>
+
+<tal:off replace="nothing">
                     <fieldset id="fieldset-facebook">
                         <legend id="fieldsetlegend-facebook">Facebook</legend>
-
                         <div class="discreet" i18n:translate="description_facebook">Drive traffic and sign ups to your website by integrating with Facebook. Use the Like Button, Send Button or other plugins to drive traffic to your site. Build apps on Facebook.com or mobile apps on the web that integrates with Facebook's mobile web site, iOS or Android applications.</div>
-
                         <div tal:define="error errors/facebook_client_id | nothing" tal:attributes="class python:'field error' if error else 'field'">
                             <label for="facebook_client_id" i18n:translate="label_ram_max_entries">Facebook client ID</label>
                             <span class="fieldRequired" i18n:translate="">(Required)</span>
@@ -65,7 +177,13 @@
                             <div tal:condition="error" tal:content="error"></div>
                             <input name="facebook_client_secret" id="facebook_client_secret" size="30" tal:attributes="value request/facebook_client_secret | view/cfg_facebook/client_secret | nothing" />
                         </div>
-
+                        <div tal:define="error errors/facebook_auth_url | nothing" tal:attributes="class python:'field error' if error else 'field'">
+                            <label for="facebook_auth_url" i18n:translate="label_ram_max_entries">Facebook authorize url</label>
+                            <span class="fieldRequired" i18n:translate="">(Required)</span>
+                            <div class="formHelp" i18n:translate="help_facebook_auth_url"></div>
+                            <div tal:condition="error" tal:content="error"></div>
+                            <input name="facebook_auth_url" id="facebook_auth_url" size="30" tal:attributes="value request/facebook_auth_url | view/cfg_facebook/auth_url | nothing" readonly="readonly" />
+                        </div>
                     </fieldset>
 
                     <fieldset id="fieldset-twitter">
@@ -77,6 +195,7 @@
                         <legend id="fieldsetlegend-google">Google</legend>
                         <p>empty</p>
                     </fieldset>
+</tal:off>
 
                     <div class="formControls">
                         <input
