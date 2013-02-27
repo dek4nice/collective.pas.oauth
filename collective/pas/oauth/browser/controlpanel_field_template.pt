@@ -9,31 +9,25 @@
 
 <div metal:define-macro="field"
     tal:define="
-        item_id     python: group_id + '_' + field_id;
-        field       python: fields_group[field_id];
-        field_title python: field.title;
-        field_desc  python: field.description;
-        field_ro    python: field.readonly;
-        isbool      python: field._type==bool;
-        reg_value   python: getattr(registry , field_id);
-        field_value python: reg_value is None and field.default or reg_value;
-        req_value   python: request.get(item_id , field_value);
-        error       python:errors.get(item_id , None);
-        checked     python: 'checked' if req_value else None;
+        error           python:errors.get(field.request_id , None);
+        isbool          python: field._type==bool;
+        field_value     python: field.registry_value is None and field.default or field.registry_value;
+        request_value   python: request.get(field.request_id , field_value);
     "
     tal:attributes="class python:'field error' if error else 'field';">
 
-    <input tal:condition="isbool" type="hidden" tal:attributes="name string:${item_id}:boolean:default;" />
-    <input tal:condition="isbool" type="checkbox" value="1" tal:attributes="checked checked; name string:${item_id}:boolean; id item_id;" />
+    <metal:image define-slot="image"></metal:image>
 
-    <label tal:attributes="for item_id" tal:content="field_title">Item Title</label>
+    <input tal:condition="isbool" type="hidden" tal:attributes="name string:${field/request_id}:boolean:default;" />
+    <input tal:condition="isbool" type="checkbox" value="1" tal:attributes="checked python: 'checked' if request_value else None; name string:${field/request_id}:boolean; id field/request_id;" />
+    <label tal:attributes="for field/request_id" tal:content="field/title">Item Title</label>
+    <span class="fieldRequired" tal:condition="field/required">(Required)</span>
 
-    <span class="fieldRequired">(Required)</span>
 
-    <div class="formHelp" i18n:translate="" tal:content="field_desc">Item Description</div>
+    <div class="formHelp" i18n:translate="" tal:content="field/description">Item Description</div>
 
     <div tal:condition="error" tal:content="error"></div>
-    <input tal:condition="not:isbool" tal:attributes="value req_value; name item_id; id item_id;" size="20" />
+    <input tal:condition="not:isbool" tal:attributes="value request_value; name field/request_id; id field/request_id;" size="37" />
 
 </div>
 

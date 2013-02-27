@@ -26,6 +26,8 @@ class OauthPluginBase( # -*- implemented plugins -*-
         self._setId( id )
         self.title = title
 
+    def testf(self):
+        raise Exception('test function')
 
 
 classImplements(OauthPluginBase, interfaces.IOauthPluginBase)

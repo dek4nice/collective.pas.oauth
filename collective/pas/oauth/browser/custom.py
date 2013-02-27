@@ -5,20 +5,20 @@ import urllib
 from login import OAuthLogin
 from Products.statusmessages.interfaces import IStatusMessage
 from collective.pas.oauth import OauthMessageFactory as _
-from collective.pas.oauth.interfaces import IOauthFacebookSettings
+from collective.pas.oauth.interfaces import IOauthCustomSettings
 
-class FacebookLoginView(OAuthLogin):
-    """Facebook OAuth 2.0 login view"""
+class CustomLoginView(OAuthLogin):
+    """Custom OAuth 2.0 login view"""
 
     def __call__(self):
-        super(FacebookLoginView , self).__call__()
+        super(CustomLoginView , self).__call__()
         redirect = self.request.response.redirect
         verificationCode = self.request.form.get("code", None)
         errorReason      = self.request.form.get("error", None)
 
         redirect_uri = "%s/%s" % (self.context.absolute_url(), self.__name__,)
 
-        config = self.registry.forInterface(IOauthFacebookSettings)
+        config = self.registry.forInterface(IOauthCustomSettings)
 
         args = {
             'client_id': config.client_id,
@@ -26,7 +26,7 @@ class FacebookLoginView(OAuthLogin):
         }
 
         if errorReason is not None:
-            IStatusMessage(self.request).add(_(u"Facebook authentication denied"), type="error")
+            IStatusMessage(self.request).add(_(u"Custom authentication denied"), type="error")
             redirect(self.context.absolute_url())
             return u""
 
@@ -34,6 +34,7 @@ class FacebookLoginView(OAuthLogin):
         if verificationCode is None:
             return self.requestInitial(config.auth_url , args)
 
+        return 'asd'
         args["client_secret"] = config.client_secret
         args["code"] = verificationCode
 
@@ -69,7 +70,7 @@ class FacebookLoginView(OAuthLogin):
             return self.requestJoinForm(args)
 
         if not userId or not userFullname:
-            IStatusMessage(self.request).add(_(u"Insufficient information in Facebook profile"), type="error")
+            IStatusMessage(self.request).add(_(u"Insufficient information in Custom profile"), type="error")
             redirect(self.context.absolute_url())
             return u""
 
@@ -78,4 +79,4 @@ class FacebookLoginView(OAuthLogin):
 
     @property
     def checkin_enabled(self):
-        return self.checkin_provider_enabled('facebook')
+        return self.checkin_provider_enabled('customprovider')

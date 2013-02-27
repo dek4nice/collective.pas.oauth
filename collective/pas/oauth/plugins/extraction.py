@@ -19,6 +19,7 @@ class ExtractionPlugin(BasePlugin):
         creds = {}
 
         #add your code here
+        # self.testf()
         cpo = request.SESSION.get('collective.pas.oauth' , None)
         if cpo is None:
             return creds

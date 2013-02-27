@@ -12,7 +12,14 @@ class IOauthPluginBase(# -*- implemented plugins -*-
 
 class IOauthSettings(Interface):
     """OAuth registry settings"""
-    pass
+
+    registration = schema.Bool(
+        title = _(u'registration' , default=u'Register with Plone User'),
+        description = _(u'help_registration' , default=u"User will be processed with Plone registration."),
+        required = False,
+        default = False,
+        # readonly = True,
+    )
 
 class IOauthGlobalSettings(Interface):
     """OAuth Global registry settings"""

@@ -11,6 +11,7 @@ class CredentialsResetPlugin(BasePlugin):
         """ Scribble as appropriate.
         """
         #add your code here
+        # self.testf()
         cpo = request.SESSION.get('collective.pas.oauth' , None)
         if cpo is not None:
             request.SESSION.delete('collective.pas.oauth')

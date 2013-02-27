@@ -22,6 +22,8 @@ class AuthenticationPlugin(BasePlugin):
         user_login = ''
 
         #add your code here
+        return {}
+        # self.testf()
         if credentials.get('src', None) != self.getId():
             return
         if ('userid' in credentials and 'userlogin' in credentials):

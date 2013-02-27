@@ -1,5 +1,6 @@
 <registry>
 
+    <records interface="collective.pas.oauth.interfaces.IOauthSettings" />
     <records interface="collective.pas.oauth.interfaces.IOauthGlobalSettings" />
     <records interface="collective.pas.oauth.interfaces.IOauthCustomSettings" />
     <records interface="collective.pas.oauth.interfaces.IOauthFacebookSettings" />

@@ -20,6 +20,7 @@
     <browser:page name="login-facebook"     for="Products.CMFCore.interfaces.ISiteRoot" class=".facebook.FacebookLoginView"     permission="zope2.View" />
     <browser:page name="login-twitter"      for="Products.CMFCore.interfaces.ISiteRoot" class=".twitter.TwitterLoginView"       permission="zope2.View" />
 
+
 <!--
     <browser:resource name="collective.pas.oauth.image_oauth.gif" file="images/oauth.gif" />
 -->
