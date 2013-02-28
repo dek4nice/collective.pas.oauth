@@ -115,6 +115,24 @@ class IOauthCustomSettings(Interface):
         readonly = False,
     )
 
+    post_redirect_uri = schema.ASCIILine(
+        title = _(u'redirect_uri' , default=u'redirect uri'),
+        description = _(u'help_redirect_uri' , default=u"?redirect_uri=yourvalue"),
+        required = False,
+    )
+    post_access_token = schema.ASCIILine(
+        title = _(u'access_token' , default=u'POST access token'),
+        description = _(u'help_access_token' , default=u"?access_token=yourvalue"),
+        required = False,
+    )
+    post_state = schema.ASCIILine(
+        title = _(u'state' , default=u'POST state'),
+        description = _(u'help_state' , default=u"?state=yourvalue"),
+        required = False,
+    )
+
+
+
 class IOauthFacebookSettings(Interface):
     """OAuth Facebook registry settings"""
 

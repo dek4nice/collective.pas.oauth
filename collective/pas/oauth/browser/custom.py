@@ -10,6 +10,8 @@ from collective.pas.oauth.interfaces import IOauthCustomSettings
 class CustomLoginView(OAuthLogin):
     """Custom OAuth 2.0 login view"""
 
+    __provider__ = 'customprovider'
+
     def __call__(self):
         super(CustomLoginView , self).__call__()
         redirect = self.request.response.redirect
@@ -23,6 +25,7 @@ class CustomLoginView(OAuthLogin):
         args = {
             'client_id': config.client_id,
             'redirect_uri': redirect_uri,
+            'response_type': 'code',
         }
 
         if errorReason is not None:
@@ -31,8 +34,12 @@ class CustomLoginView(OAuthLogin):
             return u""
 
         #First request
+        # Unsupported 'response_type' parameter No 'redirect_uri' parameter given
         if verificationCode is None:
             return self.requestInitial(config.auth_url , args)
+            return 'None code'
+        else:
+            return 'Code'+str(verificationCode)
 
         return 'asd'
         args["client_secret"] = config.client_secret
@@ -76,7 +83,3 @@ class CustomLoginView(OAuthLogin):
 
         IStatusMessage(self.request).add(_(u"Welcome. You are now logged in."), type="info")
         redirect(self.context.absolute_url())
-
-    @property
-    def checkin_enabled(self):
-        return self.checkin_provider_enabled('customprovider')

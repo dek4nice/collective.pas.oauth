@@ -84,7 +84,17 @@ cfg_
             <div class="discreet" tal:content="fieldset/description">Grop Description</div>
 
             <tal:fields repeat="field fieldset/fields">
-                <div metal:use-macro="here/@@login-oauth-controlpanel-field/macros/field">Field template</div>
+                <div metal:use-macro="here/@@login-oauth-controlpanel-field/macros/field">
+                    <tal:image_listing>
+                        <metal:image fill-slot="image">
+                            <img
+                                tal:define="provider_id python:field.id[:-8];"
+                                tal:condition="python:fieldset.id == 'global'"
+                                tal:attributes="src string:${portal_url}/++resource++collective.pas.oauth.images/${provider_id}_listing.gif;"
+                            />
+                            </metal:image>
+                    </tal:image_listing>
+                </div>
             </tal:fields>
 
         </fieldset>

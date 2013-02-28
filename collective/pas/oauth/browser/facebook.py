@@ -10,6 +10,8 @@ from collective.pas.oauth.interfaces import IOauthFacebookSettings
 class FacebookLoginView(OAuthLogin):
     """Facebook OAuth 2.0 login view"""
 
+    __provider__ = 'facebook'
+
     def __call__(self):
         super(FacebookLoginView , self).__call__()
         redirect = self.request.response.redirect
@@ -46,8 +48,6 @@ class FacebookLoginView(OAuthLogin):
         }
         responseProfile = self.requestProfile(config.profile_url , args)
 
-        # return responseProfile
-
         userId = responseProfile.get('id')
         userFullname = responseProfile.get('name')
         userFullname = userFullname.encode('utf-8')
@@ -59,7 +59,6 @@ class FacebookLoginView(OAuthLogin):
         self.set_userlogin(userEmail or userId)
         self.set_useremail(userEmail)
 
-        # return userFullname
         if self.registration_required:
             args = {
                 'form.username' : userId,
@@ -76,6 +75,3 @@ class FacebookLoginView(OAuthLogin):
         IStatusMessage(self.request).add(_(u"Welcome. You are now logged in."), type="info")
         redirect(self.context.absolute_url())
 
-    @property
-    def checkin_enabled(self):
-        return self.checkin_provider_enabled('facebook')

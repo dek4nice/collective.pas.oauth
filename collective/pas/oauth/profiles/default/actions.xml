@@ -5,24 +5,24 @@
 
     <object name="user">
 
-        <object name="facebook-login" meta_type="CMF Action" i18n:domain="collective.pas.oauth">
-            <property name="title" i18n:translate="">Login with Facebook</property>
+        <object name="custom-login" meta_type="CMF Action" i18n:domain="collective.pas.oauth">
+            <property name="title" i18n:translate="">Login with Custom Provider</property>
             <property name="description" i18n:translate=""></property>
-            <property name="url_expr">string:$portal_url/@@login-facebook</property>
+            <property name="url_expr">string:$portal_url/@@login-custom</property>
             <property name="icon_expr"></property>
-            <property name="available_expr">python:member is None</property>
+            <property name="available_expr">portal/@@login-custom/checkin_show_login_tab</property>
             <property name="permissions">
             <element value="View"/>
             </property>
             <property name="visible">True</property>
         </object>
 
-        <object name="twitter-login" meta_type="CMF Action" i18n:domain="collective.pas.oauth">
-            <property name="title" i18n:translate="">Login with Twitter</property>
+        <object name="facebook-login" meta_type="CMF Action" i18n:domain="collective.pas.oauth">
+            <property name="title" i18n:translate="">Login with Facebook</property>
             <property name="description" i18n:translate=""></property>
-            <property name="url_expr">string:$portal_url/@@login-twitter</property>
+            <property name="url_expr">string:$portal_url/@@login-facebook</property>
             <property name="icon_expr"></property>
-            <property name="available_expr">python:member is None</property>
+            <property name="available_expr">portal/@@login-facebook/checkin_show_login_tab</property>
             <property name="permissions">
             <element value="View"/>
             </property>
@@ -34,12 +34,61 @@
             <property name="description" i18n:translate=""></property>
             <property name="url_expr">string:$portal_url/@@login-google</property>
             <property name="icon_expr"></property>
-            <property name="available_expr">python:member is None</property>
+            <property name="available_expr">portal/@@login-google/checkin_show_login_tab</property>
             <property name="permissions">
             <element value="View"/>
             </property>
             <property name="visible">True</property>
         </object>
+
+        <object name="github-login" meta_type="CMF Action" i18n:domain="collective.pas.oauth">
+            <property name="title" i18n:translate="">Login with GitHub</property>
+            <property name="description" i18n:translate=""></property>
+            <property name="url_expr">string:$portal_url/@@login-github</property>
+            <property name="icon_expr"></property>
+            <property name="available_expr">portal/@@login-github/checkin_show_login_tab</property>
+            <property name="permissions">
+            <element value="View"/>
+            </property>
+            <property name="visible">True</property>
+        </object>
+
+        <object name="twitter-login" meta_type="CMF Action" i18n:domain="collective.pas.oauth">
+            <property name="title" i18n:translate="">Login with Twitter</property>
+            <property name="description" i18n:translate=""></property>
+            <property name="url_expr">string:$portal_url/@@login-twitter</property>
+            <property name="icon_expr"></property>
+            <property name="available_expr">portal/@@login-twitter/checkin_show_login_tab</property>
+            <property name="permissions">
+            <element value="View"/>
+            </property>
+            <property name="visible">True</property>
+        </object>
+<!--
+        <object name="odnoklassniki-login" meta_type="CMF Action" i18n:domain="collective.pas.oauth">
+            <property name="title" i18n:translate="">Login with Odnoklassniki</property>
+            <property name="description" i18n:translate=""></property>
+            <property name="url_expr">string:$portal_url/@@login-odnoklassniki</property>
+            <property name="icon_expr"></property>
+            <property name="available_expr">portal/@@login-odnoklassniki/checkin_show_login_tab</property>
+            <property name="permissions">
+            <element value="View"/>
+            </property>
+            <property name="visible">True</property>
+        </object>
+
+        <object name="vkontakte-login" meta_type="CMF Action" i18n:domain="collective.pas.oauth">
+            <property name="title" i18n:translate="">Login with Vkontakte</property>
+            <property name="description" i18n:translate=""></property>
+            <property name="url_expr">string:$portal_url/@@login-vkontakte</property>
+            <property name="icon_expr"></property>
+            <property name="available_expr">portal/@@login-vkontakte/checkin_show_login_tab</property>
+            <property name="permissions">
+            <element value="View"/>
+            </property>
+            <property name="visible">True</property>
+        </object>
+-->
 
     </object>
 

@@ -12,6 +12,8 @@ from collective.pas.oauth.interfaces import IOauthTwitterSettings
 class TwitterLoginView(OAuthLogin):
     """Twitter OAuth 2.0 login view"""
 
+    __provider__ = 'twitter'
+
     def __call__(self):
         redirect = self.request.response.redirect
         verificationCode = self.request.form.get("code", None)
@@ -19,11 +21,10 @@ class TwitterLoginView(OAuthLogin):
 
         redirect_uri = "%s/%s" % (self.context.absolute_url(), self.__name__,)
 
-        registry = getUtility(IRegistry)
-        cfg_twitter = registry.forInterface(IOauthTwitterSettings)
+        config = self.registry.forInterface(IOauthTwitterSettings)
 
         args = {
-            'client_id': cfg_twitter.client_id,
+            'client_id': config.client_id,
             'redirect_uri': redirect_uri,
         }
 
@@ -56,6 +57,14 @@ class TwitterLoginView(OAuthLogin):
         self.set_userlogin(userEmail or userId)
         self.set_useremail(userEmail)
 
+        if self.registration_required:
+            args = {
+                'form.username' : userId,
+                'form.fullname' : userFullname,
+                'form.email' : userEmail,
+            }
+            return self.requestJoinForm(args)
+
         if not userId or not userFullname:
             IStatusMessage(self.request).add(_(u"Insufficient information in Twitter profile"), type="error")
             redirect(self.context.absolute_url())
@@ -63,7 +72,3 @@ class TwitterLoginView(OAuthLogin):
 
         IStatusMessage(self.request).add(_(u"Welcome. You are now logged in."), type="info")
         redirect(self.context.absolute_url())
-
-    def checkin_enabled(self):
-        # python:member is None and path('object/@@login-twitter').checkin_enabled()
-        return super(OAuthLogin, self).checkin_enabled('twitter')

@@ -23,8 +23,6 @@ class OAuthLogin(BrowserView):
         self.config_base = self.registry.forInterface(IOauthSettings)
         self.config_global = self.registry.forInterface(IOauthGlobalSettings)
 
-        self.portal_membership = getToolByName(self.context, 'portal_membership')
-
         if self.sessionkey not in self.request.SESSION.keys():
             self.request.SESSION[self.sessionkey] = {}
         return
@@ -45,12 +43,21 @@ class OAuthLogin(BrowserView):
         return json.load(urllib.urlopen(redirect_uri))
 
     def requestJoinForm(self, args):
-        redirect_uri = "%s/%s?%s" % (self.context.absolute_url() , "@@register" , urllib.urlencode(args))
+        if self.check_user_created(args['form.email']):
+            args = {'__ac_name':args['form.email'],}
+            template = 'login_form'
+        else:
+            template = "@@register"
+        redirect_uri = "%s/%s?%s" % (self.context.absolute_url() , template , urllib.urlencode(args))
         self.request.response.redirect(redirect_uri)
         return
 
-    def check_user_created(self):
-        pass
+    def check_user_created(self , userid):
+        # userid = self.context.REQUEST.form.get('form.email')
+        # if not userid: return False #request validate
+        mt = getToolByName(self.context, 'portal_membership')
+        if mt.getMemberById(userid):
+            return True
 
     def set_token(self, accessToken):
         self.request.SESSION[self.sessionkey]['accessToken'] = accessToken
@@ -71,5 +78,17 @@ class OAuthLogin(BrowserView):
     def registration_required(self):
         return getattr(self.config_base , 'registration')
 
+    def checkin_show_login_tab(self):
+        mt = getToolByName(self.context, 'portal_membership')
+        if not mt.isAnonymousUser():
+            return False
+        else:
+            if self.checkin_provider_enabled(self.__provider__):
+                return True
+
     def checkin_provider_enabled(self, property):
-        return getattr(self.config_global , property + '_enabled')
+        # python:member is None and path('object/@@login-twitter').checkin_enabled()
+        #python:member is None
+        registry = getUtility(IRegistry)
+        config_global = registry.forInterface(IOauthGlobalSettings)
+        return getattr(config_global , property + '_enabled')
