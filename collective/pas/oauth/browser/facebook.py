@@ -25,6 +25,7 @@ class FacebookLoginView(OAuthLogin):
         args = {
             'client_id': config.client_id,
             'redirect_uri': redirect_uri,
+            'scope': 'email',
         }
 
         if errorReason is not None:
