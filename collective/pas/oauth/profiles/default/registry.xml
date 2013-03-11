@@ -3,6 +3,7 @@
     <records interface="collective.pas.oauth.interfaces.IOauthSettings" />
     <records interface="collective.pas.oauth.interfaces.IOauthGlobalSettings" />
     <records interface="collective.pas.oauth.interfaces.IOauthCustomSettings" />
+    <records interface="collective.pas.oauth.interfaces.IOauthVncbizSettings" />
     <records interface="collective.pas.oauth.interfaces.IOauthFacebookSettings" />
     <records interface="collective.pas.oauth.interfaces.IOauthGoogleSettings" />
     <records interface="collective.pas.oauth.interfaces.IOauthTwitterSettings" />

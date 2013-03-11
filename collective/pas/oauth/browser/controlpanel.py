@@ -14,6 +14,7 @@ from plone.registry.interfaces import IRegistry
 from collective.pas.oauth.interfaces import IOauthSettings
 from collective.pas.oauth.interfaces import IOauthGlobalSettings
 from collective.pas.oauth.interfaces import IOauthCustomSettings
+from collective.pas.oauth.interfaces import IOauthVncbizSettings
 from collective.pas.oauth.interfaces import IOauthFacebookSettings
 from collective.pas.oauth.interfaces import IOauthGoogleSettings
 from collective.pas.oauth.interfaces import IOauthTwitterSettings
@@ -77,6 +78,7 @@ class OauthControlPanel(BrowserView):
 
     providers_list = {
         'customprovider' : IOauthCustomSettings,
+        'vncbiz' : IOauthVncbizSettings,
         'facebook' : IOauthFacebookSettings,
         'google' : IOauthGoogleSettings,
         'twitter' : IOauthTwitterSettings,

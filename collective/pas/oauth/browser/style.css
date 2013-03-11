@@ -7,6 +7,13 @@
     overflow:hidden;
     color:transparent;
 }
+#personaltools-vncbiz-login {
+    background:url("++resource++collective.pas.oauth.images/vncbiz_listing.gif") no-repeat 2px 2px transparent;
+    width:20px;
+    height:20px;
+    overflow:hidden;
+    color:transparent;
+}
 #personaltools-google-login {
     background:url("++resource++collective.pas.oauth.images/google_listing.gif") no-repeat 2px 2px transparent;
     width:20px;
@@ -14,7 +21,7 @@
     overflow:hidden;
     color:transparent;
 }
-#personaltools-facebook-login {
+#personaltools-twitter-login {
     background:url("++resource++collective.pas.oauth.images/twitter_listing.gif") no-repeat 2px 2px transparent;
     width:20px;
     height:20px;

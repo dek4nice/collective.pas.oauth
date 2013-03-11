@@ -17,10 +17,11 @@
         permission="cmf.ManagePortal"
     />
 
+    <browser:page name="login-custom"       for="Products.CMFCore.interfaces.ISiteRoot" class=".custom.CustomLoginView"         permission="zope2.View" />
+    <browser:page name="login-vncbiz"       for="Products.CMFCore.interfaces.ISiteRoot" class=".vncbiz.VncbizLoginView"         permission="zope2.View" />
     <browser:page name="login-facebook"     for="Products.CMFCore.interfaces.ISiteRoot" class=".facebook.FacebookLoginView"     permission="zope2.View" />
     <browser:page name="login-twitter"      for="Products.CMFCore.interfaces.ISiteRoot" class=".twitter.TwitterLoginView"       permission="zope2.View" />
     <browser:page name="login-google"       for="Products.CMFCore.interfaces.ISiteRoot" class=".google.GoogleLoginView"         permission="zope2.View" />
-    <browser:page name="login-custom"       for="Products.CMFCore.interfaces.ISiteRoot" class=".custom.CustomLoginView"         permission="zope2.View" />
     <browser:page name="login-github"       for="Products.CMFCore.interfaces.ISiteRoot" class=".github.GithubLoginView"         permission="zope2.View" />
 
 

@@ -38,6 +38,13 @@ class IOauthGlobalSettings(Interface):
         default = False,
         # readonly = False,
     )
+    vncbiz_enabled = schema.Bool(
+        title = _(u'vncbiz_enabled' , default=u'Vnc.biz'),
+        description = _(u'help_vncbiz_enabled' , default=u"Authorize with Vnc.biz enabled."),
+        required = False,
+        default = False,
+        # readonly = False,
+    )
     google_enabled = schema.Bool(
         title = _(u'google_enabled' , default=u'Google'),
         description = _(u'help_google_enabled' , default=u"Authorize with Google enabled."),
@@ -114,7 +121,12 @@ class IOauthCustomSettings(Interface):
         default = 'https://localhost:8080/profile',
         readonly = False,
     )
-
+    post_variable_code = schema.ASCIILine(
+        title = _(u'variable_code' , default=u'variable code'),
+        description = _(u'help_variable_code' , default=u"?your_variable=code"),
+        default = 'code',
+        required = False,
+    )
     post_redirect_uri = schema.ASCIILine(
         title = _(u'redirect_uri' , default=u'redirect uri'),
         description = _(u'help_redirect_uri' , default=u"?redirect_uri=yourvalue"),
@@ -132,6 +144,30 @@ class IOauthCustomSettings(Interface):
     )
 
 
+
+class IOauthVncbizSettings(Interface):
+    """OAuth Vncbiz registry settings"""
+
+    client_id = schema.ASCIILine(
+        title = _(u'client_id' , default=u'Vncbiz client ID'),
+        description = _(u'help_client_id' , default=u"Alternatively, you can of course use the ID of an existing app."),
+        required = True,
+        default = '',
+    )
+
+    auth_url = schema.URI(
+        title = _(u'auth_url' , default=u'Vncbiz authorize url'),
+        description = _(u'help_auth_url' , default=u""),
+        required = True,
+        default = 'http://demo.vnc.biz:9800/oauth2/auth',
+    )
+
+    profile_url = schema.URI(
+        title = _(u'profile_url' , default=u'Vncbiz profile url'),
+        description = _(u'help_profile_url' , default=u""),
+        required = True,
+        default = 'http://demo.vnc.biz:9800/oauth2/tokeninfo',
+    )
 
 class IOauthFacebookSettings(Interface):
     """OAuth Facebook registry settings"""

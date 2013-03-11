@@ -15,48 +15,39 @@ class CustomLoginView(OAuthLogin):
     def __call__(self):
         super(CustomLoginView , self).__call__()
         redirect = self.request.response.redirect
-        verificationCode = self.request.form.get("code", None)
-        errorReason      = self.request.form.get("error", None)
-
-        redirect_uri = "%s/%s" % (self.context.absolute_url(), self.__name__,)
-
         config = self.registry.forInterface(IOauthCustomSettings)
+
+        verificationCode = self.request.form.get(config.post_variable_code, None)
+        errorReason      = self.request.form.get("error", None)
+        redirect_uri = "%s/%s" % (self.context.absolute_url(), self.__name__,)
 
         args = {
             'client_id': config.client_id, #client_id=11111112-2222222-333333-44444
             'redirect_uri': redirect_uri, #redirect_uri=http://dek4nice.ru/login-custom
             'response_type': 'token', #response_type=token
         }
-
-        # if errorReason is not None:
-            # IStatusMessage(self.request).add(_(u"Custom authentication denied"), type="error")
-            # redirect(self.context.absolute_url())
-            # return u""
+        raise 'under construction'
+        if errorReason is not None:
+            IStatusMessage(self.request).add(_(u"Custom authentication denied"), type="error")
+            redirect(self.context.absolute_url())
+            return u""
 
         #First request
-        # Unsupported 'response_type' parameter No 'redirect_uri' parameter given
         if verificationCode is None:
-            redirect_uri  = "%s?%s" % (config.auth_url , urllib.urlencode(args),) #('http://demo.vnc.biz:9800/oauth2/auth' , args)
-            redirect(redirect_uri)
-            # return self.requestInitial(config.auth_url , args)
-            # return 'None code'
-        else:
-            return 'Code:'+str(verificationCode)
+            return self.requestInitial(config.auth_url , args)
+        args["client_secret"] = config.client_secret
+        args["code"] = verificationCode
 
-        return 'exit'
-        # args["client_secret"] = config.client_secret
-        # args["code"] = verificationCode
-
-        # responseToken = self.requestToken(config.token_url , args)
+        responseToken = self.requestToken(config.token_url , args)
         # accessToken = responseToken["access_token"][-1]
 
-        # args = {
-            # 'access_token': accessToken ,
-            # 'fields': 'id,email,name',
-        # }
-        # responseProfile = self.requestProfile(config.profile_url , args)
+        args = {
+            'access_token': accessToken ,
+            'fields': 'id,email,name',
+        }
+        responseProfile = self.requestProfile(config.profile_url , args)
 
-        # #return responseProfile
+        return responseProfile
 
         # userId = responseProfile.get('id')
         # userFullname = responseProfile.get('name')
