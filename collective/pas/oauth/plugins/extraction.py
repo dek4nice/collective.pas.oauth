@@ -18,17 +18,17 @@ class ExtractionPlugin(BasePlugin):
         """
         creds = {}
 
-        #add your code here
-        # self.testf()
         cpo = request.SESSION.get('collective.pas.oauth' , None)
         if cpo is None:
             return creds
         else:
             return {
                 'src'       : self.getId() ,
-                'userid'    : cpo['userId'] ,
-                'userlogin'  : cpo['userLogin'] ,
-                'useremail' : cpo['userEmail'] ,
+                'provider'  : cpo.get('userProvider') ,
+                'userid'    : cpo.get('userId') ,
+                'userfullname'  : cpo.get('userFullname') ,
+                'userlogin'  : cpo.get('userLogin') ,
+                'useremail' : cpo.get('userEmail') ,
             }
 
         return creds

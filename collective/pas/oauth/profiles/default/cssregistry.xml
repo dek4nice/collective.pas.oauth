@@ -8,7 +8,7 @@
         conditionalcomment="" expression=""
         media="all" rel="stylesheet"
         rendering="link"
-        insert-before="ploneCustom.css"
+        insert-after="public.css"
     />
 
 </object>

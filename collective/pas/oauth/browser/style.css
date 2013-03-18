@@ -35,5 +35,8 @@
     overflow:hidden;
     color:transparent;
 }
-
-
+.template-login-register #oauth_register_form img.oauth_register_provider {
+    border:1px solid #ccc;
+    padding: 1px;
+    margin: 1em 1em 1em 0.5em;
+}

@@ -22,10 +22,12 @@ class OAuthLogin(BrowserView):
         self.registry = getUtility(IRegistry)
         self.config_base = self.registry.forInterface(IOauthSettings)
         self.config_global = self.registry.forInterface(IOauthGlobalSettings)
+        self.redirect_uri = "%s/%s" % (self.context.absolute_url(), self.__name__,)
 
         if self.sessionkey not in self.request.SESSION.keys():
             self.request.SESSION[self.sessionkey] = {}
         return
+
 
     def requestInitial(self, request_url, args):
         redirect_uri  = "%s?%s" % (request_url , urllib.urlencode(args),)
@@ -42,37 +44,36 @@ class OAuthLogin(BrowserView):
         redirect_uri = "%s?%s" % (request_url , urllib.urlencode(args),)
         return json.load(urllib.urlopen(redirect_uri))
 
-    def requestJoinForm(self, args):
-        if self.check_user_created(args['form.email']):
-            args = {'__ac_name':args['form.email'],}
-            template = 'login_form'
+    def requestJoinForm(self):
+        email = self.request.SESSION[self.sessionkey]['userEmail']
+        if self.check_user_created(email):
+            IStatusMessage(self.request).add(_(u"Welcome. You are now logged in."), type="info")
+            template = ''
+            # args = {'__ac_name' : email,}
+            # template = 'login_form'
         else:
-            template = "@@register"
-        redirect_uri = "%s/%s?%s" % (self.context.absolute_url() , template , urllib.urlencode(args))
+            template = "@@login-register"
+        redirect_uri = "%s/%s" % (self.context.absolute_url() , template)
         self.request.response.redirect(redirect_uri)
         return
 
-    def check_user_created(self , userid):
-        # userid = self.context.REQUEST.form.get('form.email')
-        # if not userid: return False #request validate
+    def check_user_created(self , userId):
         mt = getToolByName(self.context, 'portal_membership')
-        if mt.getMemberById(userid):
-            return True
+        return mt.getMemberById(userId)
 
     def set_token(self, accessToken):
         self.request.SESSION[self.sessionkey]['accessToken'] = accessToken
 
-    def set_userid(self, userId):
+    def set_user_data(self, userId, userEmail, userFullname='', userLogin=''):
         self.request.SESSION[self.sessionkey]['userId'] = userId
-
-    def set_userlogin(self, userLogin):
-        self.request.SESSION[self.sessionkey]['userLogin'] = userLogin
-
-    def set_userfullname(self, userFullname):
-        self.request.SESSION[self.sessionkey]['userFullname'] = userFullname
-
-    def set_useremail(self, userEmail):
         self.request.SESSION[self.sessionkey]['userEmail'] = userEmail
+        self.request.SESSION[self.sessionkey]['userFullname'] = userFullname
+        if not userFullname:
+            userFullname = userId
+        if not userLogin:
+            userLogin = userEmail or userId
+        self.request.SESSION[self.sessionkey]['userLogin'] = userLogin
+        self.request.SESSION[self.sessionkey]['userProvider'] = self.__provider__
 
     @property
     def registration_required(self):

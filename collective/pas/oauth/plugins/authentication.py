@@ -1,6 +1,14 @@
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from Products.PluggableAuthService.plugins.BasePlugin import BasePlugin
 
+from zope.component import getUtility
+from plone.registry.interfaces import IRegistry
+from collective.pas.oauth.interfaces import IOauthSettings
+from Products.CMFCore.utils import getToolByName
+
+import logging
+logger = logging.getLogger("collective.pas.oauth")
+
 class AuthenticationPlugin(BasePlugin):
     """ Map credentials to a user ID.
     """
@@ -21,13 +29,22 @@ class AuthenticationPlugin(BasePlugin):
         user_id = ''
         user_login = ''
 
-        #add your code here
-        return {}
-        # self.testf()
         if credentials.get('src', None) != self.getId():
             return
         if ('userid' in credentials and 'userlogin' in credentials):
-            return (credentials['userlogin'] , credentials['useremail'],)
+            registry = getUtility(IRegistry)
+            config_base = registry.forInterface(IOauthSettings)
+            if config_base.registration:
+                mtool = getToolByName(self, 'portal_membership')
+                user = mtool.getMemberById(credentials['useremail'])
+                if user:
+                    user_id = login = user.getId()
+                    self._getPAS().updateCredentials(self.REQUEST, self.REQUEST.RESPONSE, login, "")
+                    return (user_id, login)
+                else:
+                    return
+            else:
+                return (credentials['useremail'] , credentials['useremail'])
         else:
             return None
 

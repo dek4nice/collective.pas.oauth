@@ -19,12 +19,11 @@ class VncbizLoginView(OAuthLogin):
 
         verificationCode = self.request.form.get('access_token', None)
         errorReason      = self.request.form.get('error', None)
-        redirect_uri = "%s/%s" % (self.context.absolute_url(), self.__name__,)
 
         args = {
-            'client_id': config.client_id, #client_id=11111112-2222222-333333-44444
-            'redirect_uri': redirect_uri, #redirect_uri=http://dek4nice.ru/login-vncbiz
-            'response_type': 'token', #response_type=token
+            'client_id': config.client_id,
+            'redirect_uri': self.redirect_uri,
+            'response_type': 'token',
         }
 
         if errorReason is not None:
@@ -38,36 +37,27 @@ class VncbizLoginView(OAuthLogin):
 
         accessToken = verificationCode
 
+        #profile section
         args = {
             'dbname': 'auth_server',
             'access_token': accessToken
         }
         responseProfile = self.requestProfile(config.profile_url , args)
-
-        userId = responseProfile.get('user_id')
+        userId       = responseProfile.get('user_id')
         userFullname = responseProfile.get('name')
-        # userFullname = userFullname.encode('utf-8')
-        userEmail = responseProfile.get('email')
+        userEmail    = responseProfile.get('email')
 
-        self.set_token(accessToken)
-        self.set_userid(userId)
-        self.set_userfullname(userFullname)
-        self.set_userlogin(userEmail or userId)
-        self.set_useremail(userEmail)
-
-        # # return userFullname
-        if self.registration_required:
-            args = {
-                'form.username' : userId,
-                # 'form.fullname' : userFullname,
-                'form.email' : userEmail,
-            }
-            return self.requestJoinForm(args)
-
-        if not userId or not userFullname:
+        if not userId or not userEmail:
             IStatusMessage(self.request).add(_(u"Insufficient information in Vnc.biz profile"), type="error")
             redirect(self.context.absolute_url())
             return u""
+
+        self.set_token(accessToken)
+        self.set_user_data(userId=userId , userEmail=userEmail , userFullname=userFullname)
+
+        if self.registration_required:
+            # args = {'form.username':userId, 'form.fullname':userFullname, 'form.email':userEmail,}
+            return self.requestJoinForm()
 
         IStatusMessage(self.request).add(_(u"Welcome. You are now logged in."), type="info")
         redirect(self.context.absolute_url())

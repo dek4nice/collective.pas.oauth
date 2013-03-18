@@ -17,6 +17,8 @@
         permission="cmf.ManagePortal"
     />
 
+    <browser:page name="login-register"     for="Products.CMFCore.interfaces.ISiteRoot" class=".register.OAuthRegistration"     permission="cmf.AddPortalMember" />
+
     <browser:page name="login-custom"       for="Products.CMFCore.interfaces.ISiteRoot" class=".custom.CustomLoginView"         permission="zope2.View" />
     <browser:page name="login-vncbiz"       for="Products.CMFCore.interfaces.ISiteRoot" class=".vncbiz.VncbizLoginView"         permission="zope2.View" />
     <browser:page name="login-facebook"     for="Products.CMFCore.interfaces.ISiteRoot" class=".facebook.FacebookLoginView"     permission="zope2.View" />

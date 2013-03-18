@@ -1,0 +1,102 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+<head>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1);
+                             disable_column_one python:request.set('disable_plone.leftcolumn',1);
+                             disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
+</head>
+
+<body>
+    <metal:body fill-slot="body">
+        <div id="content">
+
+            <tal:mailhost tal:condition="view/showForm">
+
+              <h1 class="documentFirstHeading" i18n:translate="heading_registration_form">Registration Form</h1>
+
+
+    <form action="" class="enableAutoFocus enableUnloadProtection" method="post" id="oauth_register_form"
+        tal:define="
+            allowEnterPassword site_properties/validate_email|nothing;
+            fullname view/formargs/fullname | request/fullname | nothing;
+            provider view/formargs/provider | request/provider | nothing;
+            username view/formargs/username | request/username | nothing;
+            email    view/formargs/email    | request/email    | nothing;
+            password view/formargs/password | request/password | nothing;
+        "
+        action="@@oauth_register_form">
+
+      <img tal:attributes="src string:${context/absolute_url}/++resource++collective.pas.oauth.images/${provider}_tail.gif" class="oauth_register_provider" />
+
+      <input type="hidden" name="came_from" value="" tal:condition="request/came_from|nothing" tal:attributes="value request/came_from" />
+      <input type="hidden" name="last_visit:date" value="ZopeTime" tal:attributes="value here/ZopeTime" />
+      <input type="hidden" name="prev_visit:date" value="ZopeTime" tal:attributes="value here/ZopeTime" />
+      <input type="hidden" name="came_from_prefs" value="" tal:attributes="value request/came_from_prefs|nothing" />
+
+        <div class="field">
+            <label for="fullname" i18n:translate="label_full_name">Full Name</label>:
+            <span tal:content="fullname"></span>
+        </div>
+        <div class="field">
+            <label for="username" i18n:translate="label_user_name">User Name</label>:
+            <span tal:content="username"></span>
+        </div>
+        <div class="field">
+            <label for="email" i18n:translate="label_email">E-mail</label>:
+            <span tal:content="email"></span>
+        </div>
+        <div class="field" tal:replace="nothing">
+            <label for="password" i18n:translate="label_password">password</label>:
+            <span tal:content="password"></span>
+        </div>
+
+        <input type="hidden" name="form.provider" id="provider" size="30" value="provider" tal:attributes="value provider;" />
+        <input type="hidden" name="form.username" id="username" size="30" value="username" tal:attributes="value username;" />
+        <input type="hidden" name="form.fullname" id="fullname" size="30" value="fullname" tal:attributes="value fullname;" />
+        <input type="hidden" name="form.email" id="email" size="30" tal:attributes="value email;" />
+        <input tal:condition="not: allowEnterPassword" type="hidden" name="form.password" id="password" size="10" tal:attributes="value password;" />
+        <input tal:condition="not: allowEnterPassword" type="hidden" name="form.password_ctl" id="password_confirm" size="10" tal:attributes="value password;" />
+        <input type="hidden" name="mail_me" size="30" id="cb_mailme" />
+
+        <div class="field" tal:condition="allowEnterPassword">
+            <div class="formHelp" i18n:translate="label_password_change_mail">
+              A URL will be generated and e-mailed to you; follow the link
+              to reach a page where you can change your password and
+              complete the registration process.
+            </div>
+        </div>
+
+        <div class="formControls">
+            <input class="context" type="submit" name="form.actions.register" value="Register" i18n:attributes="value label_register;" />
+        </div>
+        <input type="hidden" name="form.submitted" value="1" />
+        <input tal:replace="structure context/@@authenticator/authenticator" />
+    </form>
+
+<tal:off replace="nothing"> 
+                <div metal:use-macro="context/base-pageform.html/form" />
+</tal:off>
+            </tal:mailhost>
+
+            <tal:nomailhost tal:condition="not:view/showForm">
+
+                <h1 class="documentFirstHeading"
+                    i18n:translate=""
+                    tal:content="view/label" />
+
+                <div class="documentDescription">
+                    This site doesn't have a valid email setup, so you
+                    cannot register at this time.
+                </div>
+
+            </tal:nomailhost>
+        </div>
+
+    </metal:body>
+</body>
+</html>

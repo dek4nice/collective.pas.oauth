@@ -15,16 +15,14 @@ class FacebookLoginView(OAuthLogin):
     def __call__(self):
         super(FacebookLoginView , self).__call__()
         redirect = self.request.response.redirect
+        config = self.registry.forInterface(IOauthFacebookSettings)
+
         verificationCode = self.request.form.get("code", None)
         errorReason      = self.request.form.get("error", None)
 
-        redirect_uri = "%s/%s" % (self.context.absolute_url(), self.__name__,)
-
-        config = self.registry.forInterface(IOauthFacebookSettings)
-
         args = {
             'client_id': config.client_id,
-            'redirect_uri': redirect_uri,
+            'redirect_uri': self.redirect_uri,
             'scope': 'email',
         }
 
@@ -43,35 +41,27 @@ class FacebookLoginView(OAuthLogin):
         responseToken = self.requestToken(config.token_url , args)
         accessToken = responseToken["access_token"][-1]
 
+        #profile section
         args = {
-            'access_token': accessToken ,
+            'access_token': accessToken,
             'fields': 'id,email,name',
         }
         responseProfile = self.requestProfile(config.profile_url , args)
-
+        # return responseProfile
         userId = responseProfile.get('id')
-        userFullname = responseProfile.get('name')
-        userFullname = userFullname.encode('utf-8')
+        userFullname = responseProfile.get('name').encode('utf-8')
         userEmail = responseProfile.get('email')
 
-        self.set_token(accessToken)
-        self.set_userid(userId)
-        self.set_userfullname(userFullname)
-        self.set_userlogin(userEmail or userId)
-        self.set_useremail(userEmail)
-
-        if self.registration_required:
-            args = {
-                'form.username' : userId,
-                'form.fullname' : userFullname,
-                'form.email' : userEmail,
-            }
-            return self.requestJoinForm(args)
-
-        if not userId or not userFullname:
+        if not userId or not userEmail:
             IStatusMessage(self.request).add(_(u"Insufficient information in Facebook profile"), type="error")
             redirect(self.context.absolute_url())
             return u""
+
+        self.set_token(accessToken)
+        self.set_user_data(userId=userId , userEmail=userEmail , userFullname=userFullname)
+
+        if self.registration_required:
+            return self.requestJoinForm()
 
         IStatusMessage(self.request).add(_(u"Welcome. You are now logged in."), type="info")
         redirect(self.context.absolute_url())
