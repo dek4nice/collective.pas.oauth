@@ -159,21 +159,21 @@ class IOauthVncbizSettings(Interface):
         title = _(u'auth_url' , default=u'Vncbiz authorize url'),
         description = _(u'help_auth_url' , default=u""),
         required = True,
-        default = 'http://demo.vnc.biz:9800/oauth2/auth',
+        default = 'http://localhost/oauth',
     )
 
     profile_url = schema.URI(
         title = _(u'profile_url' , default=u'Vncbiz profile url'),
         description = _(u'help_profile_url' , default=u""),
         required = True,
-        default = 'http://demo.vnc.biz:9800/oauth2/tokeninfo',
+        default = 'http://localhost/token',
     )
 
 class IOauthFacebookSettings(Interface):
     """OAuth Facebook registry settings"""
 
     client_id = schema.ASCIILine(
-        title = _(u'client_id' , default=u'Facebook client ID'),
+        title = _(u'client_id' , default=u'Facebook App ID'),
         description = _(u'help_client_id' , default=u"Alternatively, you can of course use the ID of an existing app."),
         required = True,
         readonly = False,

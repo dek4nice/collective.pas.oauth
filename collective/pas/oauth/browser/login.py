@@ -52,7 +52,16 @@ class OAuthLogin(BrowserView):
             # args = {'__ac_name' : email,}
             # template = 'login_form'
         else:
-            template = "@@login-register"
+            if True: #18.03.13 16:45 - password required settings
+                template = "@@login-register"
+            else:
+                args = {
+                    'form.username'  : self.request.SESSION[self.sessionkey]['userId'],
+                    'form.fullname'  : self.request.SESSION[self.sessionkey]['userFullname'],
+                    'form.email'     : self.request.SESSION[self.sessionkey]['userEmail'],
+                    'form.provider'  : self.request.SESSION[self.sessionkey]['userProvider'],
+                }
+                template = "@@register?%s" % urllib.urlencode(args)
         redirect_uri = "%s/%s" % (self.context.absolute_url() , template)
         self.request.response.redirect(redirect_uri)
         return

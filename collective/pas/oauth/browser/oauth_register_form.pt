@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    <metal:body fill-slot="body">
+    <metal:body fill-slot="content-core">
         <div id="content">
 
             <tal:mailhost tal:condition="view/showForm">

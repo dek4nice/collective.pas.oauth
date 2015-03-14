@@ -43,8 +43,8 @@ class VncbizLoginView(OAuthLogin):
             'access_token': accessToken
         }
         responseProfile = self.requestProfile(config.profile_url , args)
-        userId       = responseProfile.get('user_id')
-        userFullname = responseProfile.get('name')
+        userId       = responseProfile.get('user_id', '')
+        userFullname = responseProfile.get('name' , '')
         userEmail    = responseProfile.get('email')
 
         if not userId or not userEmail:
